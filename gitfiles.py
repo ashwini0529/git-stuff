@@ -55,7 +55,8 @@ def infoAboutUser():
 		spans = h1.find_all('span', attrs = {'class': "vcard-username"})
 		for span in spans:
 			print 'User Name : '+span.string
-
+		stats = soup.find('div', {'class': 'vcard-stats'}).get_text()
+		print stats
 	def contributions():
 		soup = BeautifulSoup(urllib2.urlopen(url).read())
 		totalContributions = soup.find('div' , {'class' : 'contrib-column contrib-column-first table-column'}).get_text()
@@ -73,7 +74,6 @@ def infoAboutUser():
 		countPopularRepo =0
 		for span in spans:
 			countPopularRepo = countPopularRepo+1
-
 			print str(countPopularRepo)+' : '+span.string
 		
 	profileInfo()
