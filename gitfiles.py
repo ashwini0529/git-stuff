@@ -66,6 +66,17 @@ def infoAboutUser():
 		spans = h3.find_all('span', attrs = {'class': "text-emphasized"})
 		for span in spans:
 			print 'Total commits this week : '+ span.string
+	def popularRepos():
+		soup = BeautifulSoup(urllib2.urlopen(url).read())
+		popularRepo = soup.find('div' , {'class': 'boxed-group flush'})
+		spans = popularRepo.find_all('span', attrs = {'class' : 'repo'})
+		countPopularRepo =0
+		for span in spans:
+			countPopularRepo = countPopularRepo+1
+
+			print str(countPopularRepo)+' : '+span.string
+		
 	profileInfo()
 	contributions()		
+	popularRepos()
 mainPage()	
