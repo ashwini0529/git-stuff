@@ -61,7 +61,11 @@ def infoAboutUser():
 		totalContributions = soup.find('div' , {'class' : 'contrib-column contrib-column-first table-column'}).get_text()
 		print totalContributions
 		longestStreak = soup.find('div' , {'class' : 'contrib-column table-column'}).get_text()
-		print longestStreak
+		print longestStreak	
+		h3 = soup.find('h3', 'conversation-list-heading')
+		spans = h3.find_all('span', attrs = {'class': "text-emphasized"})
+		for span in spans:
+			print 'Total commits this week : '+ span.string
 	profileInfo()
 	contributions()		
-mainPage()
+mainPage()	
