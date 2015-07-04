@@ -12,6 +12,8 @@ def mainPage():
 		infoAboutUser()
 	elif (choice == 2):
 		infoAboutRepo()
+
+	#Information about a particular repository...
 def infoAboutRepo():
 	user = raw_input('Enter the user name ')
 	repo = raw_input('Enter the repository name : ')
@@ -38,4 +40,28 @@ def infoAboutRepo():
 	pulse()
 	readme()
 	watching()
+	#more features to be added...
+
+
+def infoAboutUser():
+	user = raw_input('Enter the user name of the person you want to see : ')
+	url = 'https://github.com/'+user
+	def profileInfo():
+		soup = BeautifulSoup(urllib2.urlopen(url).read())
+		h1 = soup.find('h1', 'vcard-names')
+		spans = h1.find_all('span', attrs = {'class': "vcard-fullname"})
+		for span in spans:
+			print 'Full Name : '+span.string
+		spans = h1.find_all('span', attrs = {'class': "vcard-username"})
+		for span in spans:
+			print 'User Name : '+span.string
+
+	def contributions():
+		soup = BeautifulSoup(urllib2.urlopen(url).read())
+		totalContributions = soup.find('div' , {'class' : 'contrib-column contrib-column-first table-column'}).get_text()
+		print totalContributions
+		longestStreak = soup.find('div' , {'class' : 'contrib-column table-column'}).get_text()
+		print longestStreak
+	profileInfo()
+	contributions()		
 mainPage()
