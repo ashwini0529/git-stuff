@@ -22,7 +22,7 @@ def infoAboutRepo():
 		page = urllib2.urlopen(url)
 		soup = BeautifulSoup(page.read())
 		print '''
-		The whole information about the repository is as follows :\name'''
+		The whole information about the repository is as follows :\n'''
 		for each_div in soup.findAll('div',{'class':'section diffstat-summary'}):
 		    print each_div.get_text()
 	def readme():
@@ -37,9 +37,16 @@ def infoAboutRepo():
 		soup = BeautifulSoup(urllib2.urlopen(url).read())
 		watch = soup.find('a' , {"class" : "social-count js-social-count"}).get_text()
 		print 'Watchers: ' + watch
+	def statistics():
+		url = "https://github.com/"+user+'/'+repo
+		soup = BeautifulSoup(urllib2.urlopen(url).read())
+		for ultag in soup.find_all('ul', {'class' : 'numbers-summary'}):
+			for litag in ultag.find_all('li'):
+				print litag.text
+	statistics()
 	pulse()
 	readme()
-	watching()
+	#watching() ---> Now not showing correct watch number.. always 0
 	#more features to be added...
 
 
@@ -57,6 +64,8 @@ def infoAboutUser():
 			print 'User Name : '+span.string
 		stats = soup.find('div', {'class': 'vcard-stats'}).get_text()
 		print stats
+		userHistory = soup.find('div', {'class' : 'column one-fourth vcard'}).get_text()
+		print userHistory
 	def contributions():
 		soup = BeautifulSoup(urllib2.urlopen(url).read())
 		totalContributions = soup.find('div' , {'class' : 'contrib-column contrib-column-first table-column'}).get_text()
@@ -75,7 +84,7 @@ def infoAboutUser():
 		for span in spans:
 			countPopularRepo = countPopularRepo+1
 			print str(countPopularRepo)+' : '+span.string
-		
+	
 	profileInfo()
 	contributions()		
 	popularRepos()
