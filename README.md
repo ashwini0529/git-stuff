@@ -8,3 +8,6 @@ A python script that tells about github user or any particular repository!
 #Things to do: 
 1. Add more fields in repository section.
 2. Add more fields in user section.
+
+# Please contribute
+Contrubute to make a complete GIT Management System. Send pull requests.
