@@ -53,8 +53,8 @@ def infoAboutRepo():
 def infoAboutUser():
 	user = raw_input('Enter the user name of the person you want to see : ')
 	url = 'https://github.com/'+user
-	def profileInfo():
-		soup = BeautifulSoup(urllib2.urlopen(url).read())
+
+	def profileInfo(soup):
 		h1 = soup.find('h1', 'vcard-names')
 		spans = h1.find_all('span', attrs = {'class': "vcard-fullname"})
 		for span in spans:
@@ -66,8 +66,7 @@ def infoAboutUser():
 		print stats
 		userHistory = soup.find('div', {'class' : 'column one-fourth vcard'}).get_text()
 		print userHistory
-	def contributions():
-		soup = BeautifulSoup(urllib2.urlopen(url).read())
+	def contributions(soup):
 		totalContributions = soup.find('div' , {'class' : 'contrib-column contrib-column-first table-column'}).get_text()
 		print totalContributions
 		longestStreak = soup.find('div' , {'class' : 'contrib-column table-column'}).get_text()
@@ -76,16 +75,22 @@ def infoAboutUser():
 		spans = h3.find_all('span', attrs = {'class': "text-emphasized"})
 		for span in spans:
 			print 'Total commits this week : '+ span.string
-	def popularRepos():
-		soup = BeautifulSoup(urllib2.urlopen(url).read())
+	def popularRepos(soup):
 		popularRepo = soup.find('div' , {'class': 'boxed-group flush'})
 		spans = popularRepo.find_all('span', attrs = {'class' : 'repo'})
 		countPopularRepo =0
 		for span in spans:
 			countPopularRepo = countPopularRepo+1
 			print str(countPopularRepo)+' : '+span.string
-	
-	profileInfo()
-	contributions()		
-	popularRepos()
-mainPage()	
+	# Check If username is invalid
+	try:
+		soup = BeautifulSoup(urllib2.urlopen(url).read())
+	except Exception:
+		print 'User "%s" does not exist! Please try again.' %(user)
+		exit()
+
+	profileInfo(soup)
+	contributions(soup)
+	popularRepos(soup)
+
+mainPage()
