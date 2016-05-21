@@ -17,6 +17,12 @@ def mainPage():
 def infoAboutRepo():
 	user = raw_input('Enter the user name ')
 	repo = raw_input('Enter the repository name : ')
+	url = "https://github.com/"+user+'/'+repo
+	try:
+		urllib2.urlopen(url)
+	except urllib2.HTTPError, e:
+		print 'Sorry, there is no such repository named '+repo+' for user '+user
+		exit()
 	def pulse():
 		url = "https://github.com/"+user+'/'+repo+'/pulse/monthly'
 		page = urllib2.urlopen(url)
