@@ -10,4 +10,4 @@ A python script that tells about github user or any particular repository!
 2. Add more fields in user section.
 
 # Please contribute
-Contrubute to make a complete GIT Management System. Send pull requests.
+Contribute to make a complete GIT Management System. Send pull requests.

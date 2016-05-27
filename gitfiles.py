@@ -27,16 +27,26 @@ def infoAboutRepo():
 		url+= '/pulse/monthly'
 		page = urllib2.urlopen(url)
 		soup = BeautifulSoup(page.read())
+		div_all = soup.findAll('div',{'class':'section diffstat-summary'})
+		if not div_all:
+			print 'No Recent activities in the repository.'
+			return
 		print 'The whole information about the repository is as follows :\n'
-		for each_div in soup.findAll('div',{'class':'section diffstat-summary'}):
+		for each_div in div_all:
 		    print each_div.get_text()
 
 	def readme(url):
 		"""
 		"""
 		url+= '/blob/master/README.md'
-		soup = BeautifulSoup(urllib2.urlopen(url).read())
-		paragraphs = soup.find('article', {"class" : "markdown-body entry-content"}).get_text()
+		# Check if ReadMe exists.
+		try:
+			soup = BeautifulSoup(urllib2.urlopen(url).read())
+			paragraphs = soup.find('article', {"class" : "markdown-body entry-content"}).get_text()
+		except Exception:
+			print 'ReadMe file for the repository doesn\'t exist'
+			return
+
 		print 'README\n'
 		print paragraphs
 
@@ -54,7 +64,12 @@ def infoAboutRepo():
 		"""
 		"""
 		soup = BeautifulSoup(urllib2.urlopen(url).read())
-		for ultag in soup.find_all('ul', {'class' : 'numbers-summary'}):
+		ultags_all= soup.find_all('ul', {'class' : 'numbers-summary'})
+		if not ultags_all:
+			print 'No activities in the repository.'
+			return
+
+		for ultag in ultags_all :
 			for litag in ultag.find_all('li'):
 				print litag.text
 
@@ -101,7 +116,7 @@ def infoAboutUser():
 		"""
 		Returns the contributions done by user in given Period.
 		"""
-		# TODO: Generates error. Need modification
+		# TODO: Generates error. Needs modification
 		totalContributions = soup.find('div' , {'class' : 'contrib-column contrib-column-first table-column'}).get_text()
 		print totalContributions
 		longestStreak = soup.find('div' , {'class' : 'contrib-column table-column'}).get_text()
@@ -118,6 +133,9 @@ def infoAboutUser():
 		"""
 		popularRepo = soup.find('div' , {'class': 'boxed-group flush'})
 		spans = popularRepo.find_all('span', attrs = {'class' : 'repo'})
+		if not spans:
+			print 'No public repositories for the given user.'
+			return
 		countPopularRepo =0
 		for span in spans:
 			countPopularRepo = countPopularRepo+1
