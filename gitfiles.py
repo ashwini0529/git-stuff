@@ -100,14 +100,12 @@ def infoAboutUser():
 		"""
 		# TODO: remove unwanted code
 
-		h1 = soup.find('h1', 'vcard-names')
-		
 		#Give users full name
 		fullName = soup.find('span', attrs = {'class': "vcard-fullname"}).text
 		print "\nFull name: ",fullName
 		
 		#Give users username
-		userName = h1.find('span', attrs = {'class': "vcard-username"}).text
+		userName = soup.find('span', attrs = {'class': "vcard-username"}).text
 		print "\nusername: ",userName
 		
 		#Give users home town
