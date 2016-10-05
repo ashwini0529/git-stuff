@@ -99,19 +99,48 @@ def infoAboutUser():
 		Returns the Profile specific information for the User.
 		"""
 		# TODO: remove unwanted code
+
 		h1 = soup.find('h1', 'vcard-names')
-		spans = h1.find_all('span', attrs = {'class': "vcard-fullname"})
-		for span in spans:
-			print 'Full Name : '+span.string
-		spans = h1.find_all('span', attrs = {'class': "vcard-username"})
-		for span in spans:
-			print 'User Name : '+span.string
-		stats = soup.find('div', {'class': 'vcard-stats'}).get_text()
-		print stats
-		userHistory = soup.find('div', {'class' : 'column one-fourth vcard'}).get_text()
-		print userHistory
+		
+		#Give users full name
+		fullName = soup.find('span', attrs = {'class': "vcard-fullname"}).text
+		print "\nFull name: ",fullName
+		
+		#Give users username
+		userName = h1.find('span', attrs = {'class': "vcard-username"}).text
+		print "\nusername: ",userName
+		
+		#Give users home town
+		try:
+			homeTown = soup.find('li',{'aria-label':"Home location"}).text
+			print "\nHome Town: ",homeTown
+		except:
+			print "\nUser does not add his/her hometown on github!"
+		#Give user Email-Id
+		try:
+			email_id = soup.find('li',{'aria-label' : "Email"}).text
+			print "\nemail-id: ",email_id
+		except:
+			print "\nUser does not add his/her email-id on github!"
+			
+		#Give Joining date
+		join = soup.find('li',{'aria-label':"Member since" }).text
+		print "\nJoining date of github: ",join[10:]
+		
+		#Give users oraginsation 
+		try:
+			organization = soup.find('li',{'aria-label' : "Organization"}).text
+			print "\nOrganization: ",organization
+		except:
+			print "\nUser does not add his/her working Organization on github!"
 
-
+		#Give users Blog or Website 
+		try:
+			website = soup.find('li',{'aria-label' : "Blog or website"}).text
+			print "\nPersonal website: ",website
+		except:
+			print "\nUser does not add his/her personal website on github!\n"
+		
 	def contributions(soup):
 		"""
 		Returns the contributions done by user in given Period.
@@ -151,8 +180,16 @@ if __name__ == "__main__":
 	1. Get information about user
 	2. Get information about a particular repository\n'''
 
-	choice = int(raw_input('Enter your choice here: '))
-	if choice == 1:
-		infoAboutUser()
-	elif choice == 2:
-		infoAboutRepo()
+	#Small changes here for ask user for his choice
+	while True:
+		choice = raw_input('Enter your choice here: ')
+		if choice == '1':
+			infoAboutUser()
+			break
+		elif choice == '2':
+			infoAboutRepo()
+			break
+		else:
+			print "Sorry, It is not a valid choice.Please select from 1 and 2!\n\n"
+	
+	
