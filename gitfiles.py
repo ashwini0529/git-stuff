@@ -204,16 +204,33 @@ def infoAboutUser():
 		if not popularRepo:
 			print 'No public repositories for the given user.'
 			return
-		countPopularRepo =0
-		for repo in popularRepo:
+		desc= soup.findAll('p',{'class':'pinned-repo-desc text-gray text-small d-block mt-2 mb-3'})
+		stars= soup.findAll('p',{'class':'mb-0 f6 text-gray'})
+		length= len(popularRepo)
+		countPopularRepo =1
+		for i in range(0,length):
+			print str(countPopularRepo) + ': '
 			countPopularRepo = countPopularRepo+1
-			print str(countPopularRepo)+' : '+repo.string
+			print 'Name :' + popularRepo[i].text
+			print 'Description :' + desc[i].text
+			descriptions = list(stars[i].stripped_strings)
+			description = "\nLanguage : ".join(descriptions) if descriptions else ""
+			print "Stars :" +description
+
+
+	def userdesc(soup):
+		try:
+			desc= soup.find('div',{'class':'user-profile-bio'}).text
+			print "\nUsers Bio:",desc
+		except Exception:
+			print "\nUsers Bio: This User doesn\'t have a bio"
 
 	print "\nUsers Info\n"
 	profileInfo(soup)
 	contributions(soup)
 	print "\nUsers Popular Repositories\n"
 	popularRepos(soup)
+	userdesc(soup)
 
 if __name__ == "__main__":
 	print "Welcome to the Python Interface of GitHub!"
