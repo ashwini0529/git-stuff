@@ -15,7 +15,7 @@ def infoAboutRepo():
 	url = 'https://github.com/'+user
 	# Check If username is invalid
 	try:
-		soup = BeautifulSoup(urllib2.urlopen(url).read())
+		soup = BeautifulSoup(urllib2.urlopen(url).read(), "html.parser")
 	except Exception:
 		print 'User "%s" does not exist! Please try again.' %(user)
 		exit()
@@ -39,7 +39,7 @@ def infoAboutRepo():
 		"""
 		url += '/pulse/monthly'
 		page = urllib2.urlopen(url)
-		soup = BeautifulSoup(page.read())
+		soup = BeautifulSoup(page.read(), "html.parser")
 		div_all = soup.findAll('div',{'class':'section diffstat-summary'})
 		if not div_all:
 			print 'No Recent activities in the repository.'
@@ -54,7 +54,7 @@ def infoAboutRepo():
 		url+= '/blob/master/README.md'
 		# Check if ReadMe exists.
 		try:
-			soup = BeautifulSoup(urllib2.urlopen(url).read())
+			soup = BeautifulSoup(urllib2.urlopen(url).read(), "html.parser")
 			paragraphs = soup.find('article', {"class" : "markdown-body entry-content"}).get_text()
 		except Exception:
 			print 'ReadMe file for the repository doesn\'t exist'
@@ -68,7 +68,7 @@ def infoAboutRepo():
 		"""
 		"""
 		# TODO: watching not working as of now. Only giving 0 as Watcher...
-		soup = BeautifulSoup(urllib2.urlopen(url).read())
+		soup = BeautifulSoup(urllib2.urlopen(url).read(), "html.parser")
 		watch = soup.find('a' , {"class" : "social-count js-social-count"}).text
 		print 'Watchers: %s' %(watch.split()[0])
 
@@ -76,7 +76,7 @@ def infoAboutRepo():
 	def statistics(url):
 		"""
 		"""
-		soup = BeautifulSoup(urllib2.urlopen(url).read())
+		soup = BeautifulSoup(urllib2.urlopen(url).read(), "html.parser")
 		ultags_all= soup.find_all('ul', {'class' : 'numbers-summary'})
 		if not ultags_all:
 			print 'No activities in the repository.'
@@ -102,7 +102,7 @@ def infoAboutUser():
 	url = 'https://github.com/'+user
 	# Check If username is invalid
 	try:
-		soup = BeautifulSoup(urllib2.urlopen(url).read())
+		soup = BeautifulSoup(urllib2.urlopen(url).read(), "html.parser")
 	except Exception:
 		print 'User "%s" does not exist! Please try again.' %(user)
 		exit()
@@ -117,11 +117,11 @@ def infoAboutUser():
 		#Give users full name
 		fullName = soup.find('span', attrs = {'class': "vcard-fullname"}).text
 		print "Full name: ",fullName
-		
+
 		#Give users username
 		userName = soup.find('span', attrs = {'class': "vcard-username"}).text
 		print "username: ",userName
-		
+
 		#Give users home town
 		try:
 			homeTown = soup.find('li',{'aria-label':"Home location"}).text
@@ -134,19 +134,19 @@ def infoAboutUser():
 			print "email-id: ",email_id
 		except:
 			print "User does not add his/her email-id on github!"
-			
+
 		#Give Joining date
 		join = soup.find('li',{'aria-label':"Member since" }).text
 		print "Joining date of github: ",join[10:]
-		
-		#Give users organisation 
+
+		#Give users organisation
 		try:
 			organization = soup.find('li',{'aria-label' : "Organization"}).text
 			print "Organization: ",organization
 		except:
 			print "User does not add his/her working Organization on github!"
 
-		#Give users Blog or Website 
+		#Give users Blog or Website
 		try:
 			website = soup.find('li',{'aria-label' : "Blog or website"}).text
 			print "Personal website: ",website
@@ -157,15 +157,22 @@ def infoAboutUser():
 		for followersCount in soup.findAll('span', attrs = {'class': "counter"}):
 		    parent = followersCount.parent
 		    if parent.name == 'a' and 'followers' in parent['href']:
-			count = int(re.search(r'\d+', str(followersCount.text)).group()) 
+			count = int(re.search(r'\d+', str(followersCount.text)).group())
 			print "Followers: ",count
 
 		for followingCount in soup.findAll('span', attrs = {'class': "counter"}):
 		    parent = followingCount.parent
 		    if parent.name == 'a' and 'following' in parent['href']:
-			count = int(re.search(r'\d+', str(followingCount.text)).group()) 
+			count = int(re.search(r'\d+', str(followingCount.text)).group())
 			print "Following: ", count
-		
+
+		#Give user bio
+		try:
+			userBio = soup.find('div', attrs = {'class': 'user-profile-bio'}).text
+			print "Bio: ",userBio
+		except:
+			print "User does not add his/her Bio on github!"
+
 	def contributions(soup):
 		"""
 		Returns the contributions done by user in given Period.
@@ -182,7 +189,7 @@ def infoAboutUser():
 		streakList = []
 		for streak in Streaks:
 			streakList.append(int(streak['data-count']))
-			longestStreak = max(int(streak['data-count']),longestStreak)	
+			longestStreak = max(int(streak['data-count']),longestStreak)
 		print "Longest Streak: ",longestStreak
 
 		print "Total contributions last weeks: ",sum(streakList[-7:])
@@ -225,5 +232,3 @@ if __name__ == "__main__":
 			break
 		else:
 			print "Sorry, It is not a valid choice.Please select from 1 and 2!\n\n"
-	
-	
