@@ -1,46 +1,46 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
-
 import sys
-from PyQt4 import QtGui, QtCore
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 
+def window():
+    def msgbtn():
+        print nm.text()
+    def enterPress():
+        print nm.text()
 
-class Example(QtGui.QMainWindow):
-    
-    def __init__(self):
-        super(Example, self).__init__()
-        
-        self.initUI()
-        
-    def initUI(self):      
+    app = QApplication(sys.argv)
+    win = QWidget()
 
-        btn1 = QtGui.QPushButton("Get information about user", self)
-        btn1.move(30, 50)
+    l1 = QLabel("Github Username")
+    nm = QLineEdit()
+    nm.editingFinished.connect(enterPress)
 
-        btn2 = QtGui.QPushButton("Get repository information", self)
-        btn2.move(150, 50)
-      
-        btn1.clicked.connect(self.buttonClicked)            
-        btn2.clicked.connect(self.buttonClicked)
-        
-        self.statusBar()
-        
-        self.setGeometry(300, 300, 290, 150)
-        self.setWindowTitle('Github GUI')
-        self.show()
-        
-    def buttonClicked(self):
-      
-        sender = self.sender()
-        self.statusBar().showMessage(sender.text() + ' was pressed')
-        
-def main():
-    
-    app = QtGui.QApplication(sys.argv)
-    ex = Example()
+    l2 = QLabel("Repository")
+    add1 = QLineEdit()
+
+    fbox = QFormLayout()
+    fbox.addRow(l1,nm)
+    vbox = QVBoxLayout()
+
+    vbox.addWidget(add1)
+    fbox.addRow(l2,vbox)
+    submitButton = QPushButton("Submit")
+    cancelButton = QPushButton("Cancel")
+    fbox.addRow(submitButton,cancelButton)
+    submitButton.clicked.connect(msgbtn)
+
+    win.setLayout(fbox)
+   
+    win.setWindowTitle("Github GUI")
+    win.show()
     sys.exit(app.exec_())
 
 
+def msgbtn(i):
+   print i.text()
+def textchanged(text):
+   print "contents of text box: "+text
 if __name__ == '__main__':
-    main()
+   window()
