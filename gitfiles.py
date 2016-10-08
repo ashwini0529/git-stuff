@@ -5,7 +5,7 @@ repository from the terminal.
 import urllib2
 from bs4 import BeautifulSoup
 import requests
-
+import re
 
 def infoAboutRepo():
 	"""
@@ -19,7 +19,7 @@ def infoAboutRepo():
 	except Exception:
 		print 'User "%s" does not exist! Please try again.' %(user)
 		exit()
-	
+
 	popularRepo = soup.find_all('span' , {'class': 'repo js-repo'})
 	print "These are the some popular repo of user",user
 	for repo in popularRepo:
@@ -139,7 +139,7 @@ def infoAboutUser():
 		join = soup.find('li',{'aria-label':"Member since" }).text
 		print "Joining date of github: ",join[10:]
 		
-		#Give users oraginsation 
+		#Give users organisation 
 		try:
 			organization = soup.find('li',{'aria-label' : "Organization"}).text
 			print "Organization: ",organization
@@ -152,6 +152,19 @@ def infoAboutUser():
 			print "Personal website: ",website
 		except:
 			print "User does not add his/her personal website on github!"
+
+                # Get followers
+		for followersCount in soup.findAll('span', attrs = {'class': "counter"}):
+		    parent = followersCount.parent
+		    if parent.name == 'a' and 'followers' in parent['href']:
+			count = int(re.search(r'\d+', str(followersCount.text)).group()) 
+			print "Followers: ",count
+
+		for followingCount in soup.findAll('span', attrs = {'class': "counter"}):
+		    parent = followingCount.parent
+		    if parent.name == 'a' and 'following' in parent['href']:
+			count = int(re.search(r'\d+', str(followingCount.text)).group()) 
+			print "Following: ", count
 		
 	def contributions(soup):
 		"""
