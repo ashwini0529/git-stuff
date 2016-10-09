@@ -34,4 +34,4 @@ Contribute to make a complete GIT Management System. Send pull requests.
 ## Things to do: 
 1. Add more fields in repository section.
 2. Add more fields in user section.
-3. Have a look to the Issue section.
+3. Have a look to the Issue section for more.
