@@ -56,14 +56,15 @@ class Main(QMainWindow):
     def submit(self):
         global repo_name
         global user_name
-        repo_name = self.add1.text()
-        user_name = self.nm.text()
-        if(repo_name is None or user_name is None):
+        repo_name = str(self.add1.text()).strip()
+        user_name = str(self.nm.text()).strip()
+        if(len(repo_name) == 0 or len(user_name) == 0):
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Critical)
             msg.setText("User or repo name can't be empty")
             msg.setWindowTitle("Error")
             msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+            msg.exec_()
             return
         self.switch_view()
 
@@ -81,6 +82,7 @@ class Main(QMainWindow):
                 msg.setText("User doesn't exists.")
                 msg.setWindowTitle("Error")
                 msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+                msg.exec_()
                 self.repo_view = False
                 return
             else:
@@ -94,6 +96,7 @@ class Main(QMainWindow):
                     msg.setText("Repository doesn't exists.")
                     msg.setWindowTitle("Error")
                     msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+                    msg.exec_()
                     self.repo_view = False
                     return
 
