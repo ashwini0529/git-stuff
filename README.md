@@ -2,13 +2,15 @@
 A python script that tells about github user or any particular repository!
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine.
+First of all, download the zip file of the repository or clone it locally.
 ### Prerequisities
-To install all the prerequisities run:
+To install all the prerequisities run
 ```
 pip install -r requirements.py
 ```
+in the project folder.
 ## How to use the script
-Download the zip file of the repository or clone it locally. Then go in the repository folder and run
+To execute the script just run
 ```
 python git-gui.py
 ```
