@@ -153,18 +153,22 @@ def infoAboutUser():
 		except:
 			print "User does not add his/her personal website on github!"
 
-                # Get followers
+        # Get followers
 		for followersCount in soup.findAll('span', attrs = {'class': "counter"}):
 		    parent = followersCount.parent
 		    if parent.name == 'a' and 'followers' in parent['href']:
 			count = int(re.search(r'\d+', str(followersCount.text)).group())
 			print "Followers: ",count
+			if (count > 0):
+				follow(url,'followers')
 
 		for followingCount in soup.findAll('span', attrs = {'class': "counter"}):
 		    parent = followingCount.parent
 		    if parent.name == 'a' and 'following' in parent['href']:
 			count = int(re.search(r'\d+', str(followingCount.text)).group())
 			print "Following: ", count
+			if (count > 0):
+				follow(url,'following')
 
 		#Give user bio
 		try:
@@ -172,6 +176,23 @@ def infoAboutUser():
 			print "Bio: ",userBio
 		except:
 			print "User does not add his/her Bio on github!"
+
+	def follow(url,str):
+		url_new = url + '?tab=' + str
+		
+		try:
+			soup = BeautifulSoup(urllib2.urlopen(url_new).read(), 'html.parser')
+		except Exception:
+			print 'Connection Error!'
+			exit()
+
+		user_names = soup.find_all('span', {'class': 'f4 link-gray-dark'})
+
+		for uname in user_names:
+			print '-> ' , uname.string
+		print ''
+
+
 
 	def contributions(soup):
 		"""
@@ -227,6 +248,7 @@ def infoAboutUser():
 
 	print "\nUsers Info\n"
 	profileInfo(soup)
+	# followers(url)
 	contributions(soup)
 	print "\nUsers Popular Repositories\n"
 	popularRepos(soup)
