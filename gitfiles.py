@@ -157,16 +157,19 @@ def infoAboutUser():
 		for followersCount in soup.findAll('span', attrs = {'class': "counter"}):
 		    parent = followersCount.parent
 		    if parent.name == 'a' and 'followers' in parent['href']:
-			count = int(re.search(r'\d+', str(followersCount.text)).group())
+		    	count = followersCount.text.replace(" ",'')
+			#count = int(re.search(r'\d+', str(followersCount.text)).group())
 			print "Followers: ",count
+			count = int(re.search(r'\d+', str(followersCount.text)).group())
 			if (count > 0):
 				follow(url,'followers')
 
 		for followingCount in soup.findAll('span', attrs = {'class': "counter"}):
 		    parent = followingCount.parent
 		    if parent.name == 'a' and 'following' in parent['href']:
-			count = int(re.search(r'\d+', str(followingCount.text)).group())
+		    	count = followersCount.text.replace(" ", '')
 			print "Following: ", count
+			count = int(re.search(r'\d+', str(followingCount.text)).group())
 			if (count > 0):
 				follow(url,'following')
 
