@@ -174,11 +174,7 @@ def infoAboutUser():
 				follow(url,'following')
 
 		#Give user bio
-		try:
-			userBio = soup.find('div', attrs = {'class': 'user-profile-bio'}).text
-			print "Bio: ",userBio
-		except:
-			print "User does not add his/her Bio on github!"
+		userdesc(soup)
 
 	def follow(url,str):
 		url_new = url + '?tab=' + str
@@ -249,9 +245,9 @@ def infoAboutUser():
 	def userdesc(soup):
 		try:
 			desc= soup.find('div',{'class':'user-profile-bio'}).text
-			print "\nUsers Bio:",desc
+			print "User's Bio:",desc
 		except Exception:
-			print "\nUsers Bio: This User doesn\'t have a bio"
+			print "User's Bio: This User doesn\'t have a bio"
 
 	print "\nUsers Info\n"
 	profileInfo(soup)
@@ -259,7 +255,6 @@ def infoAboutUser():
 	contributions(soup)
 	print "\nUsers Popular Repositories\n"
 	popularRepos(soup)
-	userdesc(soup)
 
 if __name__ == "__main__":
 	print "Welcome to the Python Interface of GitHub!"
