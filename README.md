@@ -8,6 +8,11 @@ To install all the prerequisities run
 ```
 pip install -r requirements.py
 ```
+To install PyQt package
+```
+$ chmod +x install-pyqt.sh
+$ ./install-pyqt.sh
+```
 in the project folder.
 ## How to use the script
 To execute the script just run
